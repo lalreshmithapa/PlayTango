@@ -25,7 +25,7 @@ GREEN = (0, 200, 0)
 GRAY = (180, 180, 180)
 
 # Load images
-ASSET_PATH = "E:/AI/Game/tango_chat/"
+ASSET_PATH = "E:/AI/Game/tango_chat/images/"
 sun_img = pygame.image.load(os.path.join(ASSET_PATH, "sun.png"))
 moon_img = pygame.image.load(os.path.join(ASSET_PATH, "moon.png"))
 undo_img = pygame.image.load(os.path.join(ASSET_PATH, "undo.png"))
