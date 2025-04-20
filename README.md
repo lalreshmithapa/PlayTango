@@ -88,7 +88,7 @@ Place the following image assets inside `assets/images/`:
 
 ## 🧩 Credits & Acknowledgements
 
-Developed by **Suraj Thapa** as part of UC Berkeley’s [Intro to AI Project Series](https://inst.eecs.berkeley.edu/~cs188/sp24/project1/).
+Developed by **Suraj Thapa**, **Sadiksha Chitrakar**, and **Lal Bahadur Reshmi Thapa** as part of University of New Haven’s [Intro to AI Project](https://catalog.newhaven.edu/preview_program.php?catoid=31&poid=8818&returnto=2075).
 
 ---
 
