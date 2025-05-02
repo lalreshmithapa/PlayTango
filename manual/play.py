@@ -16,7 +16,11 @@ TOP_BAR_HEIGHT = 100
 GRID_AREA = GRID_SIZE * CELL_SIZE
 WINDOW_WIDTH = GRID_AREA + 2 * PADDING
 WINDOW_HEIGHT = GRID_AREA + TOP_BAR_HEIGHT + 2 * PADDING
-FONT = pygame.font.SysFont(None, 35)
+FONT = pygame.font.SysFont("arial", 25)
+BUTTONFONT = pygame.font.SysFont("arial", 17, bold=False)
+GRAY_TRANSPARENT = (150, 150, 150, 180) 
+BORDER_COLOR = (100, 100, 100)
+
 
 # Colors
 WHITE = (255, 255, 255)
@@ -27,16 +31,12 @@ GREEN = (0, 200, 0)
 GRAY = (180, 180, 180)
 
 # Load images
-ASSET_PATH = "/Users/mgrsuraz/Downloads/PlayTango/assets/images/"
+ASSET_PATH = "E:/AI/Game/tango_new/PlayTango/assets/images/"
 sun_img = pygame.image.load(os.path.join(ASSET_PATH, "sun.png"))
 moon_img = pygame.image.load(os.path.join(ASSET_PATH, "moon.png"))
-undo_img = pygame.image.load(os.path.join(ASSET_PATH, "undo.png"))
-clear_img = pygame.image.load(os.path.join(ASSET_PATH, "clear.jpg"))
 
 sun_img = pygame.transform.scale(sun_img, (CELL_SIZE - 20, CELL_SIZE - 20))
 moon_img = pygame.transform.scale(moon_img, (CELL_SIZE - 20, CELL_SIZE - 20))
-undo_img = pygame.transform.scale(undo_img, (40, 40))
-clear_img = pygame.transform.scale(clear_img, (40, 40))
 
 # Initialize screen
 screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
@@ -105,6 +105,23 @@ history = []
 # def check_win():
 #     return not np.any(grid == 0) and not (check_triples() or check_equal_counts() or check_constraints())
 
+def draw_pill_button(text, pos, padding=20):
+    text_surf = BUTTONFONT.render(text, True, BLACK)
+    text_rect = text_surf.get_rect()
+    
+    btn_width = text_rect.width + 2 * padding
+    btn_height = text_rect.height + padding
+    btn_rect = pygame.Rect(pos[0], pos[1], btn_width, btn_height)
+    btn_rect.center = pos
+
+    button_surf = pygame.Surface((btn_rect.width, btn_rect.height), pygame.SRCALPHA)
+    pygame.draw.rect(button_surf, GRAY_TRANSPARENT, button_surf.get_rect(), border_radius=btn_height // 2)
+    pygame.draw.rect(button_surf, BORDER_COLOR, button_surf.get_rect(), width=2, border_radius=btn_height // 2)
+
+    screen.blit(button_surf, btn_rect.topleft)
+    text_pos = text_surf.get_rect(center=btn_rect.center)
+    screen.blit(text_surf, text_pos)
+
 def draw_grid(start_time, timer_stopped):
     screen.fill(WHITE)
     errors = check_triples(grid).union(check_equal_counts(grid)).union(check_constraints(grid))
@@ -142,10 +159,10 @@ def draw_grid(start_time, timer_stopped):
 
     if check_win(grid):
         win_text = FONT.render("You Win!", True, GREEN)
-        screen.blit(win_text, (200, 5))
+        screen.blit(win_text, (200, 15))
 
-    screen.blit(undo_img, (WINDOW_WIDTH - 100, 5))
-    screen.blit(clear_img, (WINDOW_WIDTH - 50, 5))
+    draw_pill_button("Undo", (WINDOW_WIDTH - 140, 25))
+    draw_pill_button("Clear", (WINDOW_WIDTH - 50, 25))
 
     pygame.display.flip()
 
@@ -171,10 +188,10 @@ def main():
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 x, y = event.pos
                 if 5 <= y <= 45:
-                    if WINDOW_WIDTH - 100 <= x <= WINDOW_WIDTH - 60:
+                    if WINDOW_WIDTH - 180 <= x <= WINDOW_WIDTH - 100:
                         if history:
                             grid[:, :] = history.pop()
-                    elif WINDOW_WIDTH - 50 <= x <= WINDOW_WIDTH - 10:
+                    elif WINDOW_WIDTH - 95 <= x <= WINDOW_WIDTH - 5:
                         history.append(grid.copy())
                         for i in range(GRID_SIZE):
                             for j in range(GRID_SIZE):

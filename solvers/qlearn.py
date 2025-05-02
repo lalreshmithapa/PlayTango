@@ -16,15 +16,16 @@ TOP_BAR_HEIGHT = 100
 GRID_AREA = GRID_SIZE * CELL_SIZE
 WINDOW_WIDTH = GRID_AREA + 2 * PADDING
 WINDOW_HEIGHT = GRID_AREA + TOP_BAR_HEIGHT + 2 * PADDING
-FONT = pygame.font.SysFont(None, 35)
+FONT = pygame.font.SysFont("arial", 25)
+BUTTONFONT = pygame.font.SysFont("arial", 17, bold=False)
+GRAY_TRANSPARENT = (150, 150, 150, 180) 
+BORDER_COLOR = (100, 100, 100)
 
 WHITE, BLACK, RED, GREEN, GRAY, BLUE = (255,255,255), (0,0,0), (255,0,0), (0,200,0), (180,180,180), (0,0,255)
 
 ASSET_PATH = "E:/AI/Game/tango_new/PlayTango/assets/images/"
 sun_img = pygame.transform.scale(pygame.image.load(os.path.join(ASSET_PATH, "sun.png")), (CELL_SIZE - 20, CELL_SIZE - 20))
 moon_img = pygame.transform.scale(pygame.image.load(os.path.join(ASSET_PATH, "moon.png")), (CELL_SIZE - 20, CELL_SIZE - 20))
-undo_img = pygame.transform.scale(pygame.image.load(os.path.join(ASSET_PATH, "undo.png")), (40, 40))
-clear_img = pygame.transform.scale(pygame.image.load(os.path.join(ASSET_PATH, "clear.jpg")), (40, 40))
 
 screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 pygame.display.set_caption("Tango Q-Learning Solver")
@@ -93,6 +94,23 @@ def compute_reward():
     if check_triples(grid) or check_equal_counts(grid) or check_constraints(grid): return -5
     return 1
 
+def draw_pill_button(text, pos, padding=20):
+    text_surf = BUTTONFONT.render(text, True, BLACK)
+    text_rect = text_surf.get_rect()
+    
+    btn_width = text_rect.width + 2 * padding
+    btn_height = text_rect.height + padding
+    btn_rect = pygame.Rect(pos[0], pos[1], btn_width, btn_height)
+    btn_rect.center = pos
+
+    button_surf = pygame.Surface((btn_rect.width, btn_rect.height), pygame.SRCALPHA)
+    pygame.draw.rect(button_surf, GRAY_TRANSPARENT, button_surf.get_rect(), border_radius=btn_height // 2)
+    pygame.draw.rect(button_surf, BORDER_COLOR, button_surf.get_rect(), width=2, border_radius=btn_height // 2)
+
+    screen.blit(button_surf, btn_rect.topleft)
+    text_pos = text_surf.get_rect(center=btn_rect.center)
+    screen.blit(text_surf, text_pos)
+
 def draw_grid():
     screen.fill(WHITE)
     errors = check_triples(grid).union(check_equal_counts(grid)).union(check_constraints(grid))
@@ -125,14 +143,12 @@ def draw_grid():
     if last_move:
         screen.blit(FONT.render(f"Move: {last_move[0]} at {last_move[1]}", True, BLUE), (200, 60))
     if check_win(grid):
-        screen.blit(FONT.render("You Win!", True, GREEN), (400, 5))
+        screen.blit(FONT.render("You Win!", True, GREEN), (50, 50))
 
-    pygame.draw.rect(screen, GRAY, (WINDOW_WIDTH - 210, 5, 60, 40))
-    screen.blit(FONT.render("Train", True, BLACK), (WINDOW_WIDTH - 200, 10))
-    pygame.draw.rect(screen, GRAY, (WINDOW_WIDTH - 140, 5, 40, 40))
-    screen.blit(undo_img, (WINDOW_WIDTH - 137, 7))
-    pygame.draw.rect(screen, GRAY, (WINDOW_WIDTH - 90, 5, 40, 40))
-    screen.blit(clear_img, (WINDOW_WIDTH - 87, 7))
+    draw_pill_button("Train", (WINDOW_WIDTH - 210, 25))
+    draw_pill_button("Undo", (WINDOW_WIDTH - 130, 25))
+    draw_pill_button("Clear", (WINDOW_WIDTH - 50, 25))
+
     pygame.display.flip()
 
 def play_agent(max_retries=30):
@@ -178,11 +194,11 @@ def main():
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 x, y = event.pos
                 if 5 <= y <= 45:
-                    if WINDOW_WIDTH - 140 <= x <= WINDOW_WIDTH - 100 and history:
+                    if WINDOW_WIDTH - 170 <= x <= WINDOW_WIDTH - 90 and history:
                         grid[:, :] = history.pop()
                         timer_stopped = False
                         start_time = None
-                    elif WINDOW_WIDTH - 90 <= x <= WINDOW_WIDTH - 50:
+                    elif WINDOW_WIDTH - 95 <= x <= WINDOW_WIDTH - 5:
                         history.append(np.copy(grid))
                         for i in range(GRID_SIZE):
                             for j in range(GRID_SIZE):
@@ -190,7 +206,7 @@ def main():
                                     grid[i][j] = 0
                         timer_stopped = False
                         start_time = None
-                    elif WINDOW_WIDTH - 210 <= x <= WINDOW_WIDTH - 150:
+                    elif WINDOW_WIDTH - 255 <= x <= WINDOW_WIDTH - 165:
                         if not start_time:
                             start_time = time.time()
                         timer_stopped = False
