@@ -1,3 +1,5 @@
+# Solving with Q-Learning; agent starts from top left corner of the grid
+
 import pygame
 import numpy as np
 import os
@@ -7,7 +9,6 @@ from collections import defaultdict
 from game.constraints import check_win, check_triples, check_equal_counts, check_constraints, locked_cells, constraints
 from game.grid_setup import create_initial_grid
 
-# Pygame Setup
 pygame.init()
 GRID_SIZE = 6
 CELL_SIZE = 75
@@ -23,14 +24,13 @@ BORDER_COLOR = (100, 100, 100)
 
 WHITE, BLACK, RED, GREEN, GRAY, BLUE = (255,255,255), (0,0,0), (255,0,0), (0,200,0), (180,180,180), (0,0,255)
 
-ASSET_PATH = "E:/AI/Game/tango_new/PlayTango/assets/images/"
+ASSET_PATH = "/Users/mgrsuraz/Downloads/PlayTango/assets/images/"
 sun_img = pygame.transform.scale(pygame.image.load(os.path.join(ASSET_PATH, "sun.png")), (CELL_SIZE - 20, CELL_SIZE - 20))
 moon_img = pygame.transform.scale(pygame.image.load(os.path.join(ASSET_PATH, "moon.png")), (CELL_SIZE - 20, CELL_SIZE - 20))
 
 screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
-pygame.display.set_caption("Tango Q-Learning Solver")
+pygame.display.set_caption("Tango Game")
 
-# Grid
 grid = create_initial_grid()
 
 # Q-learning Agent Class

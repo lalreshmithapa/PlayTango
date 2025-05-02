@@ -24,7 +24,7 @@ tango_project/
 │   ├── grid_setup.py         # Initializes grid and locked cells
 │   ├── constraints.py        # Game rules and constraint checking logic
 ├── assets/
-│   └── images/               # sun.png, moon.png, undo.png, clear.jpg
+│   └── images/               # sun.png, moon.png
 ```
 
 ---
@@ -85,8 +85,6 @@ Place the following image assets inside `assets/images/`:
 
 - `sun.png`
 - `moon.png`
-- `undo.png`
-- `clear.jpg`
 
 > 📝 Make sure images are scaled appropriately or use Pygame's `transform.scale()` in code.
 

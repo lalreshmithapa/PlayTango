@@ -14,7 +14,6 @@ constraints = {
     (2, 5): ('=', 'H')
 }
 
-# Optional cleanup of invalid constraints
 constraints = {
     k: v for k, v in constraints.items()
     if not (v[1] == 'H' and k[1] == GRID_SIZE - 1 or v[1] == 'V' and k[0] == GRID_SIZE - 1)

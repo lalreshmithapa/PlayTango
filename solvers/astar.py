@@ -8,10 +8,8 @@ import heapq
 from game.constraints import check_win, check_triples, check_equal_counts, check_constraints, locked_cells, constraints
 from game.grid_setup import create_initial_grid, locked_cells
 
-# Initialize pygame
 pygame.init()
 
-# Constants
 GRID_SIZE = 6
 CELL_SIZE = 75
 PADDING = 10
@@ -24,40 +22,21 @@ BUTTONFONT = pygame.font.SysFont("arial", 17, bold=False)
 GRAY_TRANSPARENT = (150, 150, 150, 180) 
 BORDER_COLOR = (100, 100, 100)
 
-# Colors
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 RED = (255, 0, 0)
 GREEN = (0, 200, 0)
 GRAY = (180, 180, 180)
 
-# Load images
-ASSET_PATH = "E:/AI/Game/tango_new/PlayTango/assets/images/"
+ASSET_PATH = "/Users/mgrsuraz/Downloads/PlayTango/assets/images/"
 sun_img = pygame.transform.scale(pygame.image.load(os.path.join(ASSET_PATH, "sun.png")), (CELL_SIZE - 20, CELL_SIZE - 20))
 moon_img = pygame.transform.scale(pygame.image.load(os.path.join(ASSET_PATH, "moon.png")), (CELL_SIZE - 20, CELL_SIZE - 20))
 
-# Initialize screen
 screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 pygame.display.set_caption("Tango Game")
 
-# Game setup
-# grid = np.zeros((GRID_SIZE, GRID_SIZE), dtype=int)
-# locked_cells = {(0, 1): 1, (2, 2): 2, (4, 5): 1, (5, 0): 2}
-# for (r, c), val in locked_cells.items():
-#     grid[r][c] = val
-
 grid = create_initial_grid()
 
-
-# constraints = {
-#     (0, 0): ('=', 'H'),
-#     (1, 2): ('x', 'V'),
-#     (3, 3): ('=', 'V'),
-#     (4, 1): ('x', 'H'),
-#     (2, 5): ('=', 'H')
-# }
-
-# Remove constraints that would end on the last column or row
 to_remove = []
 for (r, c), (symbol, direction) in constraints.items():
     if (direction == 'H' and c == GRID_SIZE - 1) or (direction == 'V' and r == GRID_SIZE - 1):
@@ -67,51 +46,7 @@ for key in to_remove:
 
 history = []
 
-# --- Constraint Check Functions ---
-# def check_triples(grid):
-#     errors = set()
-#     for i in range(GRID_SIZE):
-#         for j in range(GRID_SIZE - 2):
-#             row = grid[i, j:j+3]
-#             if row[0] == row[1] == row[2] != 0:
-#                 errors.update({(i, j), (i, j+1), (i, j+2)})
-#             col = grid[j:j+3, i]
-#             if col[0] == col[1] == col[2] != 0:
-#                 errors.update({(j, i), (j+1, i), (j+2, i)})
-#     return errors
-
-# def check_equal_counts(grid):
-#     errors = set()
-#     for i in range(GRID_SIZE):
-#         row = grid[i]
-#         col = grid[:, i]
-#         if list(row).count(1) > 3 or list(row).count(2) > 3:
-#             errors.update({(i, j) for j in range(GRID_SIZE)})
-#         if list(col).count(1) > 3 or list(col).count(2) > 3:
-#             errors.update({(j, i) for j in range(GRID_SIZE)})
-#     return errors
-
-# def check_constraints(grid):
-#     errors = set()
-#     for (r, c), (symbol, direction) in constraints.items():
-#         if direction == 'H' and c < GRID_SIZE - 1:
-#             val1 = grid[r][c]
-#             val2 = grid[r][c+1]
-#         elif direction == 'V' and r < GRID_SIZE - 1:
-#             val1 = grid[r][c]
-#             val2 = grid[r+1][c]
-#         else:
-#             continue
-#         if symbol == '=' and val1 != 0 and val2 != 0 and val1 != val2:
-#             errors.update({(r, c), (r, c+1) if direction == 'H' else (r+1, c)})
-#         elif symbol == 'x' and val1 != 0 and val2 != 0 and val1 == val2:
-#             errors.update({(r, c), (r, c+1) if direction == 'H' else (r+1, c)})
-#     return errors
-
-# def check_win(grid):
-#     return not np.any(grid == 0) and not (check_triples(grid) or check_equal_counts(grid) or check_constraints(grid))
-
-# --- A* Solver ---
+# A* Solver
 class TangoState:
     def __init__(self, grid, locked, parent=None):
         self.grid = np.copy(grid)
@@ -184,7 +119,6 @@ def draw_pill_button(text, pos, padding=20):
     text_pos = text_surf.get_rect(center=btn_rect.center)
     screen.blit(text_surf, text_pos)
 
-# --- Drawing ---
 def draw_grid(start_time, timer_stopped):
     screen.fill(WHITE)
     errors = check_triples(grid).union(check_equal_counts(grid)).union(check_constraints(grid))
@@ -227,7 +161,6 @@ def draw_grid(start_time, timer_stopped):
 
     pygame.display.flip()
 
-# --- Main Loop ---
 def main():
     global stop_time
     running = True
