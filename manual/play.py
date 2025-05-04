@@ -26,7 +26,7 @@ BLUE = (0, 0, 255)
 GREEN = (0, 200, 0)
 GRAY = (180, 180, 180)
 
-ASSET_PATH = "/Users/mgrsuraz/Downloads/PlayTango/assets/images/"
+ASSET_PATH = "assets/images/"
 sun_img = pygame.image.load(os.path.join(ASSET_PATH, "sun.png"))
 moon_img = pygame.image.load(os.path.join(ASSET_PATH, "moon.png"))
 

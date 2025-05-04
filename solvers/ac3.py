@@ -29,7 +29,7 @@ GREEN = (0, 200, 0)
 GRAY = (180, 180, 180)
 ORANGE = (255, 165, 0)
 
-ASSET_PATH = "/Users/mgrsuraz/Downloads/PlayTango/assets/images/"
+ASSET_PATH = "assets/images/"
 sun_img = pygame.transform.scale(pygame.image.load(os.path.join(ASSET_PATH, "sun.png")), (CELL_SIZE - 20, CELL_SIZE - 20))
 moon_img = pygame.transform.scale(pygame.image.load(os.path.join(ASSET_PATH, "moon.png")), (CELL_SIZE - 20, CELL_SIZE - 20))
 
